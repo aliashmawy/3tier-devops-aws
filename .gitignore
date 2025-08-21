@@ -21,7 +21,6 @@ override.tf.json
 #Application files and directories
 node_modules/
 .env
-global-bundle.pem
 /coverage
 /build
 # Ansible

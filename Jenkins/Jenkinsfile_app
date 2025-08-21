@@ -78,8 +78,6 @@ pipeline {
     stage('Docker Build & Trivy Scan') {
       steps {
         sh '''
-          cp /opt/certs/global-bundle.pem ${BACK_DIR}/
-          cp /opt/certs/.env ${BACK_DIR}/
           docker build -t ${FRONT_IMAGE} ${FRONT_DIR}
           docker build -t ${BACK_IMAGE} ${BACK_DIR}
 

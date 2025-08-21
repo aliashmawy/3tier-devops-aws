@@ -25,4 +25,13 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+          env:
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-conf
+                  key: MONGO_HOST
+          envFrom:
+            - secretRef:
+                name: mongo-secret
 

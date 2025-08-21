@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-conf
+data:
+  MONGO_HOST: "final-project-db-0-2025071213240880440000000c.cab2qcwmyvyz.us-east-1.docdb.amazonaws.com"
+  REACT_APP_API_URL: "/api"

@@ -25,3 +25,9 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-conf
+                  key: REACT_APP_API_URL

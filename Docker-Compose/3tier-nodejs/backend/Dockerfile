@@ -16,6 +16,6 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-COPY global-bundle.pem /app/certs/global-bundle.pem
+ADD https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem ./global-bundle.pem
 
 CMD ["node", "server.js"]
