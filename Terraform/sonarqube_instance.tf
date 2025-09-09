@@ -40,7 +40,7 @@ resource "aws_instance" "sonarqube" {
     Name = "sonarqube"
   }
 
-  user_data = file("${path.module}/sonarqube.sh")
+  user_data = file("${path.module}/scripts/sonarqube.sh")
 }
 
 

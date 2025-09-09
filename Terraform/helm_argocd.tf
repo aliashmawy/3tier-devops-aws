@@ -10,7 +10,7 @@ resource "helm_release" "argocd" {
   version          = "4.5.2"
   namespace        = "argocd"
   create_namespace = true
-  values           = [file("${path.module}/values_argocd.yaml")]
+  values           = [file("${path.module}/values/values_argocd.yaml")]
   set = [
     {
       name  = "server.service.type"
@@ -34,5 +34,5 @@ data "kubernetes_service" "argocd_server" {
 }
 
 data "external" "argocd_password" {
-  program = ["bash", "${path.module}/argocd_pass.sh"]
+  program = ["bash", "${path.module}/scripts/argocd_pass.sh"]
 }
