@@ -1,21 +1,27 @@
 pipeline {
   agent any
 
-
   environment {
     APP_DIR = 'Docker-Compose'
     FRONT_DIR = 'Docker-Compose/3tier-nodejs/frontend'
     BACK_DIR = 'Docker-Compose/3tier-nodejs/backend'
     DEPLOY_DIR = 'argocd'
     K8S_DIR = 'K8s_Manifest'
+
     SONAR_PROJECT_KEY = 'your_sonar_project'
     SONAR_TOKEN = credentials('jenkins')
     GIT_CRED = credentials('github-cred')
+
     AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
     AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     AWS_REGION = 'us-east-1'
-    FRONT_IMAGE = "908442807176.dkr.ecr.us-east-1.amazonaws.com/frontend:${BUILD_NUMBER}"
-    BACK_IMAGE = "908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:${BUILD_NUMBER}"
+    AWS_ACCOUNT_ID = 'your-acc-id'
+    ECR_DOMAIN = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+    FRONT_REPO = 'frontend'
+    BACK_REPO = 'backend'
+    FRONT_IMAGE = "${ECR_DOMAIN}/${FRONT_REPO}:${BUILD_NUMBER}"
+    BACK_IMAGE = "${ECR_DOMAIN}/${BACK_REPO}:${BUILD_NUMBER}"
   }
 
   stages {
@@ -90,7 +96,7 @@ pipeline {
     stage('Push to ECR') {
       steps {
         sh '''
-          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin $(echo ${FRONT_IMAGE} | cut -d/ -f1)
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_DOMAIN}
           docker push ${FRONT_IMAGE}
           docker push ${BACK_IMAGE}
         '''
