@@ -10,7 +10,7 @@ server:
       source:
         repoURL: https://github.com/aliashmawy/3tier-devops-aws
         targetRevision: HEAD
-        path: argocd
+        path: K8s
         directory:
           recurse: true
       syncPolicy:
