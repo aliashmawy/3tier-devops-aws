@@ -18,6 +18,12 @@
 
 ---
 
+## 🔄 CI/CD Pipeline Flow
+
+![Pipeline Diagram](Attachments/diagrams/Pipeline.gif)
+
+---
+
 ## 🏗️ Repository Structure
 
 - [Docker Compose (3-tier Node.js)](Docker-Compose/3tier-nodejs/README.md) – Local Docker Compose setup and documentation
@@ -53,7 +59,37 @@ Beyond application deployment, this project demonstrates a complete DevOps lifec
 This project showcases real-world skills in modern cloud-native infrastructure, automation, and application delivery — suitable for production-ready environments.
 
 ---
+## Problems faced
 
-## 🔄 CI/CD Pipeline Flow
+### Problem 1: Creating a LoadBalancer Service
 
-![Pipeline Diagram](Attachments/diagrams/Pipeline.gif)
+- When Creating the Load balancer service to provision an NLB on AWS
+- The Nodes weren’t healthy
+- `kubectl get svc service-name`
+
+![image.png](Attachments/screenshots/svc_error.png)
+
+### Solution
+
+- added this tag to the EKS module
+
+```hcl
+node_security_group_tags = {
+    "kubernetes.io/cluster/final-project" = null
+  }
+```
+
+## Why
+
+- This tag is the same tag used for the EKS cluster
+- So this tag will be attached to the SG of the node to make sure this nodes belongs to this cluster
+
+---
+
+### Problem 2: Connection issue between Frontend and Backend
+
+- In a React App, is not enough to expose the frontend on an Ingress, you have to expose the backend as well unless using `server rendering`
+- So the problem was trying to access the backend from the Link that only exposed the frontend and depended on the ClusterIP that exposes the backend internally
+
+---
+
