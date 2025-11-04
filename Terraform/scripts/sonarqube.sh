@@ -40,6 +40,7 @@ sudo groupadd sonar
 sudo useradd -c "SonarQube - User" -d /opt/sonarqube/ -g sonar sonar
 sudo chown sonar:sonar /opt/sonarqube/ -R
 cp /opt/sonarqube/conf/sonar.properties /root/sonar.properties_backup
+PUBLIC_IP=$(curl -s ifconfig.me)
 cat <<EOT> /opt/sonarqube/conf/sonar.properties
 sonar.jdbc.username=sonar
 sonar.jdbc.password=admin123
@@ -50,6 +51,7 @@ sonar.web.javaAdditionalOpts=-server
 sonar.search.javaOpts=-Xmx512m -Xms512m -XX:+HeapDumpOnOutOfMemoryError
 sonar.log.level=INFO
 sonar.path.logs=logs
+sonar.core.serverBaseURL=http://$PUBLIC_IP:9000
 EOT
 cat <<EOT> /etc/systemd/system/sonarqube.service
 [Unit]
